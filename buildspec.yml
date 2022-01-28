@@ -3,6 +3,19 @@ phases:
   install:
     runtime-versions:
       java: corretto8
+    commands:
+      - echo Entered the install phase..
+      - apt-get update -y
+      - apt-get update -y maven
+    finally:
+      - echo always runs even if the update or install command fails  
+      
+    pre-build:
+      commands:
+       - echo entered the pre-build phase
+      finally:
+        - echo this is always run if command fails
+      
 service:
  provider:
   name: aws
@@ -12,18 +25,33 @@ service:
   
  functions:
   LambdaDemo1:
-    handler: src/LambdaDemo1.handler
+    handler: LambdaDemo1.handler
     
-      
+  Sample:
+    handler: Sample.handler
+          
   build:
     commands:
     - echo "Build started"
+    - mnv install
+    
+  finally:
+      - echo always runs even if th install command fails  
+ 
   post_build:
     commands:
     - echo "Build completed"
-    - mvn package
-    - mv target/lambda1-0.0.1-SNAPSHOT.jar lambda1-0.0.1-SNAPSHOT.jar
+   
 artifacts:
-  files:
-  - lambda1-0.0.1-SNAPSHOT.jar
-  - .ebextensions/**/*
+  artifact1:
+    files:
+    - target/LambdaDemo1-0.0.1-SNAPSHOT.jar
+    discard-paths: yes
+  artifact2:
+    files:
+    - target/Sample-0.0.1-SNAPSHOT.jar
+    discard-paths: yes
+    
+    
+ 
+  

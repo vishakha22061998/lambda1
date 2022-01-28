@@ -7,10 +7,15 @@
   <version>0.0.1-SNAPSHOT</version>
   <url>http://www.example.com</url>
   <build>
+    <finalName>lambda1</finalName>
     <plugins>
       <plugin>
-        <artifactId>maven-shade-plugin</artifactId>
-        <version>3.2.1</version>
+        <artifactId>maven-plugin-plugin</artifactId>
+        <version>3.6.4</version>
+        <configuration>
+          <goalPrefix>plugin</goalPrefix>
+          <outputDirectory>target/dir</outputDirectory>
+        </configuration>
       </plugin>
     </plugins>
   </build>
@@ -26,13 +31,6 @@
           <groupId>org.hamcrest</groupId>
         </exclusion>
       </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>com.amazonaws</groupId>
-      <artifactId>aws-java-sdk-bom</artifactId>
-      <version>1.11.522</version>
-      <type>pom</type>
-      <scope>import</scope>
     </dependency>
   </dependencies>
   <dependencyManagement>
