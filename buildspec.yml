@@ -1,13 +1,29 @@
 version: 0.2
 phases:
- build:
-  commands:
-   - echo enter the build phase
-   - mvn clean package
-post_build:
- commands:
-   - echo build completed successfully
+  install:
+    runtime-versions:
+      java: corretto8
+service:
+ provider:
+  name: aws
+  runtime: Java 8 on Amazon Linux 1
+  region: ap-south-1
+  
+  
+ functions:
+  LambdaDemo1:
+    handler: src/LambdaDemo1.handler
+    
+      
+  build:
+    commands:
+    - echo "Build started"
+  post_build:
+    commands:
+    - echo "Build completed"
+    - mvn package
+    - mv target/lambda1-0.0.1-SNAPSHOT.jar lambda1-0.0.1-SNAPSHOT.jar
 artifacts:
- files:
-  - target/lambda1.jar
-discard-paths: yes
+  files:
+  - lambda1-0.0.1-SNAPSHOT.jar
+  - .ebextensions/**/*
